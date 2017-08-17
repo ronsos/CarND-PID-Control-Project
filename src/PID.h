@@ -30,17 +30,17 @@ public:
   /*
   * Initialize PID.
   */
-  void Init(double Kp, double Ki, double Kd);
+  void Init();
 
   /*
-  * Update the PID error variables given cross track error.
+  * Find the steering angle given cross track error.
   */
-  void UpdateError(double cte);
+  double CalculateSteering(double cte, double speed);
 
   /*
-  * Calculate the total PID error.
+  * Calculate the total PID error. NOT USED
   */
-  double TotalError();
+  double CalculateThrottle(double speed);
 };
 
 #endif /* PID_H */

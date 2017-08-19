@@ -9,6 +9,8 @@ public:
   double p_error;
   double i_error;
   double d_error;
+  double cte_old;
+  double cte_int;
 
   /*
   * Coefficients
@@ -40,7 +42,7 @@ public:
   /*
   * Calculate the total PID error. NOT USED
   */
-  double CalculateThrottle(double speed);
+  double CalculateThrottle(double cte, double speed);
 };
 
 #endif /* PID_H */

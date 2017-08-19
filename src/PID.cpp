@@ -2,6 +2,7 @@
 
 using namespace std;
 #include <iostream>
+#include <cmath>
 
 /*
 * TODO: Complete the PID class.
@@ -12,10 +13,9 @@ PID::PID() {}
 PID::~PID() {}
 
 void PID::Init() {
-    double cte_int, cte_old;
-    Kp = -0.1;
-    Ki = 0.0; //0.0001;
-    Kd = -0.01; //-0.001;
+    Kp = -0.1;    //-0.034;
+    Ki = -0.0001;
+    Kd = -1.0 ;   //1.4 * pow(Kp, 2.0);  
     cte_int = 0.0;
     cte_old = 0.0;
 }
@@ -23,7 +23,9 @@ void PID::Init() {
 double PID::CalculateSteering(double cte, double speed) {
     
     // initialize variables
-    double steering, cte_int, D_cte, cte_old; 
+    double steering, D_cte; 
+    
+    cout << "cte_old=" << cte_old << "; cte_int=" << cte_int << "; Kd=" << Kd << endl;
     
     // calculate integral and differential cte terms
     cte_int = cte_int + cte;
@@ -45,15 +47,22 @@ double PID::CalculateSteering(double cte, double speed) {
     return steering;
 }
 
-double PID::CalculateThrottle(double speed) { 
+double PID::CalculateThrottle(double cte, double speed) { 
     
     //init variables
     double throttle;
-    double gain = 0.1;
-    double desired_speed = 10.0;
+    double gain = 0.5;
+    double desired_speed = 25.0;
     
     // Put in speed controller
-    throttle = gain * (desired_speed - speed);
+    throttle = gain * (desired_speed - speed); // - (abs(cte)/3.0);
+    
+    if (throttle > 1.0){
+        throttle = 1.0;
+    }
+    if (throttle < -1.0){
+        throttle = -1.0;
+    }
     
     // return desired throttle
     return throttle;

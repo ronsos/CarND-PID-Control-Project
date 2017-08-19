@@ -62,7 +62,7 @@ int main()
           
           // Calculate Throttle
           // TODO determine how to implement this!  
-          throttle = pid.CalculateThrottle(speed);  
+          throttle = pid.CalculateThrottle(cte, speed);  
           
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;

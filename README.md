@@ -1,92 +1,51 @@
-# CarND-Controls-PID
-Self-Driving Car Engineer Nanodegree Program
+## PID Control Project
 
----
+### Steering Controller
+A PID controller was implemented for the steering, in the CalculateSteering() method. 
 
-## Dependencies
+`steering = Kp*cte + Kd*D_cte + Ki*cte_int`
 
-* cmake >= 3.5
- * All OSes: [click here for installation instructions](https://cmake.org/install/)
-* make >= 4.1
-  * Linux: make is installed by default on most Linux distros
-  * Mac: [install Xcode command line tools to get make](https://developer.apple.com/xcode/features/)
-  * Windows: [Click here for installation instructions](http://gnuwin32.sourceforge.net/packages/make.htm)
-* gcc/g++ >= 5.4
-  * Linux: gcc / g++ is installed by default on most Linux distros
-  * Mac: same deal as make - [install Xcode command line tools]((https://developer.apple.com/xcode/features/)
-  * Windows: recommend using [MinGW](http://www.mingw.org/)
-* [uWebSockets](https://github.com/uWebSockets/uWebSockets)
-  * Run either `./install-mac.sh` or `./install-ubuntu.sh`.
-  * If you install from source, checkout to commit `e94b6e1`, i.e.
-    ```
-    git clone https://github.com/uWebSockets/uWebSockets 
-    cd uWebSockets
-    git checkout e94b6e1
-    ```
-    Some function signatures have changed in v0.14.x. See [this PR](https://github.com/udacity/CarND-MPC-Project/pull/3) for more details.
-* Simulator. You can download these from the [project intro page](https://github.com/udacity/self-driving-car-sim/releases) in the classroom.
+The controller consists of three terms. The first, the proportional component, `Kp*cte`, drives the error toward zero. However, it also tends to create overshoot. In order to smooth out the response, a derivative term is included, `Kd*D_cte`. The derivative term helps reduce the overshoot and dampens the overall response. The final term, the integral term, becomes important over long periods of time. The integral term is used to remove the windup error, which is the tendency for the controller to drift over time (i.e. develop a bias). 
 
-There's an experimental patch for windows in this [PR](https://github.com/udacity/CarND-PID-Control-Project/pull/3)
+### Speed Controller
+A simple proportional only P-controller was used for adjusting throttle to achieve the desired speed. It can be found in CalculateThrottle(). It works by changing the throttle in proportion to the error in speed. 
 
-## Basic Build Instructions
+`throttle = gain * (desired_speed - speed)`
 
-1. Clone this repo.
-2. Make a build directory: `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./pid`. 
+This implementation worked very well for keeping the speed consistent. It remained close to, but slightly less than, the target speed. A more sophisticated controller was not needed. 
 
-## Editor Settings
+### Gain Tuning
+For the speed controller, a proportional gain of 0.5 was used. 
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+The steering controller required much more effort and iteration. The procedure was to set the Kp gain such that there are small oscillations with a small overshoot on the straightaway. Then, add a Kd gain to smooth out the overshoot. I also included a small integral term to remove windup error. 
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+I obtained a working controller for a slow speed, 10 mph. Once that was working, I gradually increased the speed, getting the controller working at each speed. As the target speed went up, the Kd gain had to be increased. At slow speeds, it was about 10 times the Kp gain. At 50 mph, I used 20 times Kp. At 70 mph, a Kd of 40 times Kp worked well. 
 
-## Code Style
+At speeds of 90 mph and above, I found that I could get the controller to work for a single lap, but during the 2nd lap the car left the track. It is possible that even higher values of Kd may work for multiple laps at this speed, as I did not exhaust all the possbilities in my trials.
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+### Video
+I was unable to record a video. The video recording function is disabled in the simulation when in autonomous mode. I attempted to record a video using Quicktime while running the simulator. However, this caused the controller to perform very poorly -- presumably due to computer processing limitations. 
 
-## Project Instructions and Rubric
+### Screenshots
+The following screenshots highlight the two most difficult turns on the course. **Turn 1** is the left turn that occurs about halfway or so through the course, with the open area on the right. **Turn 2** is the sharp right turn that occurs just after turn 1. 
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+#### Turn 1 
+###### Before
+![1a](Writeup_images/turn1a.png "Turn 1a")
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+###### After
+![1b](Writeup_images/turn1b.png "Turn 1b")
 
-## Hints!
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
+#### Turn 2
+###### Before
+![2b](Writeup_images/turn2b.png "Turn 2b")
 
-## Call for IDE Profiles Pull Requests
+###### During
+![2c](Writeup_images/turn2c.png "Turn 2c")
 
-Help your fellow students!
+###### Coming out of the turn
+![2d](Writeup_images/turn2d.png "Turn 2d")
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
+###### Re-centered after recovery from turn
+![2e](Writeup_images/turn2e.png "Turn 2e")

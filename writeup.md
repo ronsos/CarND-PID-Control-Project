@@ -5,7 +5,7 @@ A PID controller was implemented for the steering, in the CalculateSteering() me
 
 `steering = Kp*cte + Kd*D_cte + Ki*cte_int`
 
-The controller consists of three terms. The first, the proportional component, Kp*cte, drives the error toward zero. However, it also tends to create overshoot. In order to smooth out the response, a derivative term is included, Kd*D_cte. The derivative term helps reduce the overshoot and dampens the overall response. The final term, the integral term, becomes important over long periods of time. The integral term is used to remove the windup error, which is the tendency for the controller to drift over time (i.e. develop a bias). 
+The controller consists of three terms. The first, the proportional component, `Kp*cte`, drives the error toward zero. However, it also tends to create overshoot. In order to smooth out the response, a derivative term is included, `Kd*D_cte`. The derivative term helps reduce the overshoot and dampens the overall response. The final term, the integral term, becomes important over long periods of time. The integral term is used to remove the windup error, which is the tendency for the controller to drift over time (i.e. develop a bias). 
 
 ### Speed Controller
 A simple proportional only P-controller was used for adjusting throttle to achieve the desired speed. It can be found in CalculateThrottle(). It works by changing the throttle in proportion to the error in speed. 
@@ -34,17 +34,17 @@ The following screenshots highlight the two most difficult turns on the course. 
 ![1a](Writeup_images/turn1a.png "Turn 1a")
 
 ###### After
-![1b](Writeup_images/turn1a.png "Turn 1b")
+![1b](Writeup_images/turn1b.png "Turn 1b")
 
 #### Turn 2
 ###### Before
-![2b](Writeup_images/turn1a.png "Turn 2b")
+![2b](Writeup_images/turn2b.png "Turn 2b")
 
 ###### During
-![2c](Writeup_images/turn1a.png "Turn 2c")
+![2c](Writeup_images/turn2c.png "Turn 2c")
 
 ###### Coming out of the turn
-![2d](Writeup_images/turn1a.png "Turn 2d")
+![2d](Writeup_images/turn2d.png "Turn 2d")
 
 ###### Re-centered after recovery from turn
-![2e](Writeup_images/turn1a.png "Turn 2e")
+![2e](Writeup_images/turn2e.png "Turn 2e")

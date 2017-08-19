@@ -13,9 +13,9 @@ PID::PID() {}
 PID::~PID() {}
 
 void PID::Init() {
-    Kp = -0.1;    //-0.034;
+    Kp = -0.1;   
     Ki = -0.0001;
-    Kd = -4.0; //-1.3; //-1.0 ;   //1.4 * pow(Kp, 2.0);  
+    Kd = -4.0;   
     cte_int = 0.0;
     cte_old = 0.0;
 }
@@ -25,7 +25,7 @@ double PID::CalculateSteering(double cte, double speed) {
     // initialize variables
     double steering, D_cte; 
     
-    cout << "cte_old=" << cte_old << "; cte_int=" << cte_int << "; Kd=" << Kd << endl;
+    //cout << "cte_old=" << cte_old << "; cte_int=" << cte_int << "; Kd=" << Kd << endl;
     
     // calculate integral and differential cte terms
     cte_int = cte_int + cte;
@@ -33,15 +33,7 @@ double PID::CalculateSteering(double cte, double speed) {
     cte_old = cte;
     
     // Calculate steering angle
-    // Use speed to modify Kp gain, except when speed is below tolerance
-    if (speed < 1.0E-5){
-        steering = Kp*cte + Ki*cte_int + Kd*D_cte;
-    } else {
-        steering = Kp*cte + Ki*cte_int + Kd*D_cte;
-        //steering = Kp/speed*cte + Ki*cte_int + Kd*D_cte;
-    }
-    
-    //cout << "Gains (KpKiKd): " << Kp << Ki << Kd << endl;
+    steering = Kp*cte + Ki*cte_int + Kd*D_cte;
     
     // return the steering angle
     return steering;
@@ -52,10 +44,10 @@ double PID::CalculateThrottle(double cte, double speed) {
     //init variables
     double throttle;
     double gain = 0.5;
-    double desired_speed = 70.0; //25.0;
+    double desired_speed = 70.0; 
     
     // Put in speed controller
-    throttle = gain * (desired_speed - speed); // - (abs(cte)/3.0);
+    throttle = gain * (desired_speed - speed); 
     
     if (throttle > 1.0){
         throttle = 1.0;

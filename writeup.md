@@ -22,4 +22,7 @@ The steering controller required much more effort and iteration. The procedure w
 
 I obtained a working controller for a slow speed, 10 mph. Once that was working, I gradually increased the speed, getting the controller working at each speed. As the target speed went up, the Kd gain had to be increased. At slow speeds, it was about 10 times the Kp gain. At 50 mph, I used 20 times Kp. At 70 mph, a Kd of 40 times Kp worked well. 
 
-At speeds of 90 mph and above, I found that I could get the controller to work for a single lap, but during the 2nd lap the car left the track. It is possible that even higher values of Kd may work for multiple laps at this speed, as I did not exhaust all the possbilities in my trials 
+At speeds of 90 mph and above, I found that I could get the controller to work for a single lap, but during the 2nd lap the car left the track. It is possible that even higher values of Kd may work for multiple laps at this speed, as I did not exhaust all the possbilities in my trials.
+
+Video
+I was unable to record a video. The video recording function is disabled in the simulation when in autonomous mode. I attempted to record a video using Quicktime while running the simulator. However, this caused the controller to perform very poorly -- presumably due to computer processing limitations. 

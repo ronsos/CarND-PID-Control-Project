@@ -12,7 +12,7 @@ A simple proportional only P-controller was used for adjusting throttle to achie
 
 `throttle = gain * (desired_speed - speed)`
 
-This implementation worked very well for keeping the speed very close to the target speed. A more sophisticated controller was not needed. 
+This implementation worked very well for keeping the speed consistent. It remained close to, but slightly less than, the target speed. A more sophisticated controller was not needed. 
 
 ### Gain Tuning
 For the speed controller, a proportional gain of 0.5 was used. 
@@ -35,6 +35,7 @@ The following screenshots highlight the two most difficult turns on the course. 
 
 ###### After
 ![1b](Writeup_images/turn1b.png "Turn 1b")
+
 
 #### Turn 2
 ###### Before

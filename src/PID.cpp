@@ -15,7 +15,7 @@ PID::~PID() {}
 void PID::Init() {
     Kp = -0.1;    //-0.034;
     Ki = -0.0001;
-    Kd = -1.0 ;   //1.4 * pow(Kp, 2.0);  
+    Kd = -4.0; //-1.3; //-1.0 ;   //1.4 * pow(Kp, 2.0);  
     cte_int = 0.0;
     cte_old = 0.0;
 }
@@ -52,7 +52,7 @@ double PID::CalculateThrottle(double cte, double speed) {
     //init variables
     double throttle;
     double gain = 0.5;
-    double desired_speed = 25.0;
+    double desired_speed = 70.0; //25.0;
     
     // Put in speed controller
     throttle = gain * (desired_speed - speed); // - (abs(cte)/3.0);
